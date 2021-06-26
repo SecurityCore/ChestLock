@@ -1,0 +1,8 @@
+name: ChestLock
+main: de.fearmyshotz.chestlock.ChestLock
+api-version: 1.16
+author: FearMyShotz
+version: 1.0
+commands:
+  addchest:
+  removechest:
