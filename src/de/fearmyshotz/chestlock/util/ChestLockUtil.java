@@ -32,8 +32,19 @@ public class ChestLockUtil {
 		p.sendMessage(ChestLock.prefix + "§aAuf diese Kiste hast nur du Zugriff. Mit /addchest kannst du anderen Zugriff geben, Mit /removechest kannst du ihn wieder entfernen.");
 	}
 	
+	public static void removeChest(Block b) {
+		int x = b.getLocation().getBlockX();
+		int y = b.getLocation().getBlockY();
+		int z = b.getLocation().getBlockZ();
+		
+		String chestName = "X" + x + "Y" + y + "Z" + z;
+		
+		ChestData.get().set("Chests." + chestName, null);
+		ChestData.save();
+	}
+	
 	@SuppressWarnings("unchecked")
-	public static void addAccess(Player p, Player performer) {
+	public static void addAccess(String p, Player performer) {
 		Block targetChest = performer.getTargetBlock((Set<Material>) null, 5);
 		int x = targetChest.getLocation().getBlockX();
 		int y = targetChest.getLocation().getBlockY();
@@ -43,15 +54,15 @@ public class ChestLockUtil {
 		
 		List<String> accessList = (List<String>) ChestData.get().getList("Chests." + chestName + ".access");
 		
-		if(accessList.contains(p.getUniqueId().toString())) {
-			performer.sendMessage(ChestLock.prefix + "§cDer Spieler " + p.getName() + " hat bereits Zugriff auf die Kiste!");
+		if(accessList.contains(p)) {
+			performer.sendMessage(ChestLock.prefix + "§cDer Spieler " + p + " hat bereits Zugriff auf die Kiste!");
 			return;
 		} else {
-			accessList.add(p.getUniqueId().toString());
+			accessList.add(p);
 			ChestData.get().set("Chests." + chestName + ".access", accessList);
 			ChestData.save();
 			
-			performer.sendMessage(ChestLock.prefix + "§aDer Spieler " + p.getName() + " hat nun Zugriff auf die Kiste!");
+			performer.sendMessage(ChestLock.prefix + "§aDer Spieler " + p + " hat nun Zugriff auf die Kiste!");
 			return;
 		}
 	}
@@ -70,7 +81,7 @@ public class ChestLockUtil {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static void removeAccess(Player p, Player performer) {
+	public static void removeAccess(String p, Player performer) {
 		Block targetChest = performer.getTargetBlock((Set<Material>) null, 5);
 		int x = targetChest.getLocation().getBlockX();
 		int y = targetChest.getLocation().getBlockY();
@@ -80,15 +91,15 @@ public class ChestLockUtil {
 		
 		List<String> accessList = (List<String>) ChestData.get().getList("Chests." + chestName + ".access");
 		
-		if(accessList.contains(p.getUniqueId().toString())) {
-			accessList.remove(p.getUniqueId().toString());
+		if(accessList.contains(p)) {
+			accessList.remove(p);
 			ChestData.get().set("Chests." + chestName + ".access", accessList);
 			ChestData.save();
 			
-			performer.sendMessage(ChestLock.prefix + "§aDer Spieler " + p.getName() + " nun keinen Zugriff mehr auf die Kiste!");
+			performer.sendMessage(ChestLock.prefix + "§aDer Spieler " + p + " nun keinen Zugriff mehr auf die Kiste!");
 			return;
 		} else {
-			performer.sendMessage(ChestLock.prefix + "§aDer Spieler " + p.getName() + " keinen Zugriff auf die Kiste!");
+			performer.sendMessage(ChestLock.prefix + "§aDer Spieler " + p + " keinen Zugriff auf die Kiste!");
 			return;
 		}
 	}
