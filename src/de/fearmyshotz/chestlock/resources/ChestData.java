@@ -15,6 +15,7 @@ public class ChestData {
 	
 	public static void setup() {
 		file = new File(ChestLock.plugin.getDataFolder(), "chest-data.yml");
+		fileConfiguration = YamlConfiguration.loadConfiguration(file);
 		
 		if(!file.exists()) {
 			//ChestLock.plugin.saveResource("chest-data.yml", false);

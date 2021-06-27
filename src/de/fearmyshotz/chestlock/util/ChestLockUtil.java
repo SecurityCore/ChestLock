@@ -29,7 +29,7 @@ public class ChestLockUtil {
 		ChestData.get().set("Chests." + chestName + ".access", accessList);
 		ChestData.save();
 		
-		p.sendMessage(ChestLock.prefix + "§aAuf diese Kiste hast nur du Zugriff. Mit /addchest kannst du anderen Zugriff geben, Mit /removechest kannst du ihn wieder entfernen.");
+		p.sendMessage(ChestLock.prefix + "§aAuf diese Kiste hast nur du Zugriff. Mit /chest siehst du weitere Befehle.");
 	}
 	
 	public static void removeChest(Block b) {
@@ -41,6 +41,16 @@ public class ChestLockUtil {
 		
 		ChestData.get().set("Chests." + chestName, null);
 		ChestData.save();
+	}
+	
+	public static boolean isChestRegistered(Block b) {
+		int x = b.getLocation().getBlockX();
+		int y = b.getLocation().getBlockY();
+		int z = b.getLocation().getBlockZ();
+		
+		String chestName = "X" + x + "Y" + y + "Z" + z;
+		
+		return (ChestData.get().getConfigurationSection("Chests." + chestName) != null);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -115,12 +125,15 @@ public class ChestLockUtil {
 	}
 	
 	public static boolean isOwner(Player p, Block b) {
-		int x = b.getLocation().getBlockX();
-		int y = b.getLocation().getBlockY();
-		int z = b.getLocation().getBlockZ();
-		
-		String chestName = "X" + x + "Y" + y + "Z" + z;
-		
-		return (ChestData.get().getString("Chests." + chestName + ".owner").equals(p.getName()));
+		if(isChestRegistered(b)) {
+			int x = b.getLocation().getBlockX();
+			int y = b.getLocation().getBlockY();
+			int z = b.getLocation().getBlockZ();
+			
+			String chestName = "X" + x + "Y" + y + "Z" + z;
+			
+			return (ChestData.get().getString("Chests." + chestName + ".owner").equals(p.getName()));
+		}
+		return false;
 	}
 }

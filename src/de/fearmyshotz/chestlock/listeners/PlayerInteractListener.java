@@ -15,11 +15,13 @@ public class PlayerInteractListener implements Listener {
 	public void onPlayerInteract(final PlayerInteractEvent e) {
 		if(e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			if(e.getClickedBlock().getType() == Material.CHEST) {
-				if(ChestLockUtil.hasAccess(e.getPlayer(), e.getClickedBlock())) {
-					e.setCancelled(false);
-				} else {
-					e.setCancelled(true);
-					e.getPlayer().sendMessage(ChestLock.prefix + "§cDu hast keinen Zugriff auf die Kiste!");
+				if(ChestLockUtil.isChestRegistered(e.getClickedBlock())) {
+					if(ChestLockUtil.hasAccess(e.getPlayer(), e.getClickedBlock())) {
+						e.setCancelled(false);
+					} else {
+						e.setCancelled(true);
+						e.getPlayer().sendMessage(ChestLock.prefix + "§cDu hast keinen Zugriff auf die Kiste!");
+					}
 				}
 			}
 		}

@@ -4,5 +4,13 @@ api-version: 1.16
 author: FearMyShotz
 version: 1.0
 commands:
+  lock:
+    description: Sperrt eine Kiste
   addchest:
+    description: Gibt anderen Zugriff auf die Kiste
+  unlock:
+    description: Gibt eine Kiste frei
   removechest:
+    description: Entfernt anderen Zugriff auf die Kiste
+  chest:
+    description: Zeigt die Hilfe an

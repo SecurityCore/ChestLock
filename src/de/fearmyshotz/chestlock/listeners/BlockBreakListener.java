@@ -13,13 +13,15 @@ public class BlockBreakListener implements Listener {
 	@EventHandler
 	public void onBlockBreak(final BlockBreakEvent e) {
 		if(e.getBlock().getType() == Material.CHEST) {
-			if(ChestLockUtil.isOwner(e.getPlayer(), e.getBlock())) {
-				e.setCancelled(false);
-				ChestLockUtil.removeChest(e.getBlock());
-				e.getPlayer().sendMessage(ChestLock.prefix + "§aDie Kiste wurde entfernt!");
-			} else {
-				e.setCancelled(true);
-				e.getPlayer().sendMessage(ChestLock.prefix + "§cNur der Besitzer der Kiste darf sie abbauen!");
+			if(ChestLockUtil.isChestRegistered(e.getBlock())) {
+				if(ChestLockUtil.isOwner(e.getPlayer(), e.getBlock())) {
+					e.setCancelled(false);
+					ChestLockUtil.removeChest(e.getBlock());
+					e.getPlayer().sendMessage(ChestLock.prefix + "§aDie Kiste wurde entfernt!");
+				} else {
+					e.setCancelled(true);
+					e.getPlayer().sendMessage(ChestLock.prefix + "§cNur der Besitzer der Kiste darf sie abbauen!");
+				}
 			}
 		}
 	}
